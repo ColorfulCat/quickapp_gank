@@ -1,0 +1,18 @@
+<import name="pageList" src="./pageList"></import>
+<template>
+  <div class="main-page">
+    <tabs onchange="onTabChange">
+    	<tab-bar class="navigation-tab">
+					<text class="navigation-item" 
+					style="color: {{(currentIndex === index)?'#ff1234':'#666666'}}" 
+					for="{{(index, item) in tabs}}">{{item.name}}</text>
+      	</tab-bar>
+      	<tab-content class="tab-content">
+	        <pageList for="{{tabs}}" mydata="{{$item}}"></pageList>
+      	</tab-content>
+    </tabs>
+  </div>
+</template>
+
+<style src="./index.css"></style>
+<script src="./index.js"></script>

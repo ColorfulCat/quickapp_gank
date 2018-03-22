@@ -1,0 +1,21 @@
+<template>
+  <div class="container">
+    <web 
+    id="web" 
+    src="{{srcUrl}}" 
+    class="web-page" 
+    @error="onError"
+    @titlereceive="onTitleReceive"
+    @pagestart="onPageStart"></web>
+  </div>
+</template>
+
+<style>
+  .container {
+    flex-direction: column;
+    flex: 1;
+    background-color: #ffffff;
+  } 
+</style>
+    
+<script src="./index.js"></script>
