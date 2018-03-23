@@ -9,8 +9,11 @@
 					<text class="item-date">{{formatDate($item.publishedAt)}}</text>
 				</div>
 			</list-item>
-			<list-item type="bottom-item" if="canLoadMore">
-				<text class="bottom-text">{{loadingText}}</text>
+			<list-item type="bottom-item">
+				<div class="bottom-div">
+					<progress if="canLoadMore" class="bottom-progress" type="circular"></progress>
+					<text class="bottom-text">{{loadingText}}</text>
+				</div>
 			</list-item>  
 		</list>
 		<!-- 回顶按钮 -->
@@ -23,174 +26,208 @@
 </template>
 
 <style>
-  .content {
-  	width: 750px;;
-  	height: 100%;
-  }
-  .refresh-div {
-	flex-direction: column;
-	flex: 1;
-	width: 750px;
-	text-align: center;
-	progress-color: #ff1234;
-  }
-  .page-list {
-  	flex: 1;
-    width: 750px;
-  }
-  .item-content-div {
-	  width: 100%;
-	  margin-left: 20px;
-	  margin-right: 20px;
-	  margin-top: 20px;
-	  background-color: #ffffff;
-	  flex-direction: column;
-	  justify-content: center;
-	  padding: 15px;
-	  border-radius: 8px;
-  }
-  .item-image {
-	  width: 680px;
-	  height: 680px;
-	  resize-mode: cover;
-      background-color: rgba(0, 0, 0, 0.03);
-  }
-  .item-image-small {
-		width: 680px;
-		height: 340px;
-		resize-mode: contain;
-		background-color: rgba(0, 0, 0, 0.03);
-  }
-  .item-title {
-		width: 100%;
-		text-align: left;
-		font-size: 30px;
-		color: #666666;
-		margin-bottom: 15px;
-  }
-  .item-date {
-		width: 100%;
-		height: 30px;
-		text-align: right;
-		font-size: 24px;
-		color: #999999;
-		margin-top: 15px;
-  }
-  .bottom-text {
-		width: 750px;
-		height: 120px;
-		text-align: center;
-		font-size: 30px;
-	  
-  }
-  .showgototop {
-	position: fixed;
-    width: 80px;
-    height: 80px;
-    right: 30px;
-	bottom: 60px;
-	resize-mode: contain;
-    animation-name: showgototop;
-    animation-duration: 800ms;
-    animation-fill-mode: forwards;
-	animation-timing-function: ease-in;
-  }
-  @keyframes showgototop {
-    from {
-      transform: translateY(200px);
+    .content {
+        width: 750px;
+        height: 100%;
     }
-    to {
-      transform: translateY(0px);
+    
+    .refresh-div {
+        flex-direction: column;
+        flex: 1;
+        width: 750px;
+        text-align: center;
+        progress-color: #ff1234;
     }
-  }
+    
+    .page-list {
+        flex: 1;
+        width: 750px;
+    }
+    
+    .item-content-div {
+        width: 100%;
+        margin-left: 20px;
+        margin-right: 20px;
+        margin-top: 20px;
+        background-color: #ffffff;
+        flex-direction: column;
+        justify-content: center;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    
+    .item-image {
+        width: 680px;
+        height: 680px;
+        resize-mode: cover;
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+    
+    .item-image-small {
+        width: 680px;
+        height: 340px;
+        resize-mode: contain;
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+    
+    .item-title {
+        width: 100%;
+        text-align: left;
+        font-size: 30px;
+        color: #666666;
+        margin-bottom: 15px;
+    }
+    
+    .item-date {
+        width: 100%;
+        height: 30px;
+        text-align: right;
+        font-size: 24px;
+        color: #999999;
+        margin-top: 15px;
+    }
+    
+    .bottom-div {
+        width: 750px;
+        height: 120px;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .bottom-progress {
+        height: 120px;
+        stroke-width: 32px;
+        color: #ff1234;
+    }
+    
+    .bottom-text {
+        margin-left: 10px;
+        height: 120px;
+        text-align: center;
+        font-size: 30px;
+    }
+    
+    .showgototop {
+        position: fixed;
+        width: 80px;
+        height: 80px;
+        right: 30px;
+        bottom: 60px;
+        resize-mode: contain;
+        animation-name: showgototop;
+        animation-duration: 800ms;
+        animation-fill-mode: forwards;
+        animation-timing-function: ease-in;
+    }
+    
+    @keyframes showgototop {
+        from {
+            transform: translateY(200px);
+        }
+        to {
+            transform: translateY(0px);
+        }
+    }
 </style>
 
 <script>
-import fetch from '@system.fetch'
-import router from '@system.router'
+    import fetch from '@system.fetch'
+    import router from '@system.router'
 
-export default {
-	props: ['mydata'],
-	data: {
-		listData: [],
-		currentPage: 0,
-		pageSize: 30,
-		showGoToTop: false,
-		canLoadMore: true,
-		isRefreshing: false,
-		loadingText: "正在加载…"
-	},
-	onInit () {
-		// console.log("pagelist init = ", JSON.stringify(this.mydata))
-		this.getDataList(false)
-	},
-	getDataList: function(isLoadMore) {
-		var self = this
-		fetch && fetch.fetch({
-            url:"http://gank.io/api/data/" + self.mydata.tag + "/"+ self.pageSize + "/" + (self.currentPage + 1),
-            success:function(data){
-                var tempData = []
-				try {
-					tempData = JSON.parse(data.data).results
-				} catch (error) {
-					console.log("JSON.parse(data.data).results catch error")
-				}
-                console.log("fetch success ", tempData.length)
-				if(tempData.length < self.pageSize){
-					self.canLoadMore = false;
-				}
-				if(self.currentPage > 0){
-					self.listData = self.listData.concat(tempData)
-				}else{
-					self.listData = tempData;
-				}
-				self.currentPage = self.currentPage + 1
-				self.isRefreshing = false
-            },
-            fail: function(data, code) {
-				console.log("fetch fail, code=" + code);
-				self.loadingText = "很抱歉，加载失败"
-				self.isRefreshing = false
+    export default {
+        props: ['mydata'],
+        data: {
+            listData: [],
+            currentPage: 0,
+            pageSize: 30,
+            showGoToTop: false,
+            canLoadMore: true,
+            isRefreshing: false,
+            loadingText: "正在加载…"
+        },
+        onInit() {
+            // console.log("pagelist init = ", JSON.stringify(this.mydata))
+            this.getDataList(false)
+        },
+        getDataList: function(isLoadMore) {
+            var self = this
+            fetch && fetch.fetch({
+                url: "http://gank.io/api/data/" + self.mydata.tag + "/" + self.pageSize + "/" + (self.currentPage + 1),
+                success: function(data) {
+                    var tempData = []
+                    try {
+                        tempData = JSON.parse(data.data).results
+                    } catch (error) {
+                        console.log("JSON.parse(data.data).results catch error")
+                    }
+                    console.log("fetch success ", tempData.length)
+                    if (tempData.length < self.pageSize) {
+                        self.loadingText = "没有更多数据了 ~"
+                        self.canLoadMore = false;
+                    }
+                    if (self.currentPage > 0) {
+                        self.listData = self.listData.concat(tempData)
+                    } else {
+                        self.listData = tempData;
+                    }
+                    self.currentPage = self.currentPage + 1
+                    self.isRefreshing = false
+                },
+                fail: function(data, code) {
+                    console.log("fetch fail, code=" + code);
+                    self.loadingText = "很抱歉，加载失败"
+                    self.canLoadMore = false;
+                    self.isRefreshing = false
+                }
+            })
+        },
+        refresh: function(e) {
+            this.isRefreshing = e.refreshing;
+            this.currentPage = 0;
+            this.showGoToTop = false
+            this.getDataList(false);
+        },
+        scrollbottom: function(e) {
+            console.log("scrollbottom");
+            if (this.canLoadMore) {
+                this.getDataList(true)
             }
-        })
-	},
-	refresh: function (e) {
-		this.isRefreshing = e.refreshing;
-		this.currentPage = 0;
-		this.showGoToTop = false
-		this.getDataList(false);
-	},
-	scrollbottom: function(e) {
-        console.log("scrollbottom");
-		if(this.canLoadMore){
-			this.getDataList(true)
-		}
-		if(!this.showGoToTop){ this.showGoToTop = true }
-    },
-    scrolltop: function(e) {
-		console.log("scrolltop");
-		if(this.showGoToTop){ this.showGoToTop = false }
-	},
-	goToWeb (urlString) {
-		router.push ({
-			uri: '/Web',
-			params: { url: urlString }
-		})
-	},
-	gototop: function(e) {
-        this.showGoToTop = false
-        this.$element('list').scrollTo({ index: 0, smooth: true })
-    },
-	formatDate (dateString) {
-		if(dateString){
-			var date = new Date(dateString);
-			if(date){
-				return (date.getMonth() + 1) + "月" + date.getDate() + "日"
-			}
-			return dateString
-		}
-		return ""
-	}
+            if (!this.showGoToTop) {
+                this.showGoToTop = true
+            }
+        },
+        scrolltop: function(e) {
+            console.log("scrolltop");
+            if (this.showGoToTop) {
+                this.showGoToTop = false
+            }
+        },
+        goToWeb(urlString) {
+            router.push({
+                uri: '/Web',
+                params: {
+                    url: urlString
+                }
+            })
+        },
+        gototop: function(e) {
+            this.showGoToTop = false
+            this.$element('list').scrollTo({
+                index: 0,
+                smooth: true
+            })
+        },
+        formatDate(dateString) {
+            if (dateString) {
+                var date = new Date(dateString);
+                if (date) {
+                    return (date.getMonth() + 1) + "月" + date.getDate() + "日"
+                }
+                return dateString
+            }
+            return ""
+        }
 
-}
+    }
 </script>

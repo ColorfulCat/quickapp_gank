@@ -3,7 +3,7 @@
   <div class="main-page">
     <tabs onchange="onTabChange">
     	<tab-bar class="navigation-tab">
-					<text class="navigation-item" 
+					<text class="{{(currentIndex === index)?'navigation-item-selected':'navigation-item'}}" 
 					style="color: {{(currentIndex === index)?'#ff1234':'#666666'}}" 
 					for="{{(index, item) in tabs}}">{{item.name}}</text>
       	</tab-bar>

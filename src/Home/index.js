@@ -9,8 +9,7 @@ export default {
     data: {
         title: 'Gank',
         currentIndex: 0,
-        tabs: [
-            {
+        tabs: [{
                 "name": "前端",
                 "tag": "前端"
             },
@@ -32,32 +31,32 @@ export default {
             }
         ]
     },
-    onInit () {
+    onInit() {
         console.info("homepage init")
         var self = this
-        
+
 
     },
     onShow() {
         console.log("onShow")
     },
-    onHide () {
+    onHide() {
         console.info('onHide')
     },
-    onBackPress () {
+    onBackPress() {
         console.info(` ~~~ onBackPress`)
     },
-    onMenuPress () {
+    onMenuPress() {
         console.info(` ~~~ onMenuPress`)
         this.$app.showMenu();
     },
     onTabChange: function(e) {
-        if(e){
+        if (e) {
             console.log("onTabChange", JSON.stringify(e.index))
             this.currentIndex = e.index
-        }else{
+        } else {
             console.log("onTabChange")
         }
-        
+
     }
 }

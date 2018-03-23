@@ -28,6 +28,28 @@
   	color: #666666;
   	font-size: 28px;
   }
+  .navigation-item-selected {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #666666;
+    font-size: 28px;
+    animation-name: enlarge;
+    animation-duration: 300ms;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in;
+  }
+  @keyframes enlarge {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
   .page-list {
   	height: 500px;
   	flex: 1;

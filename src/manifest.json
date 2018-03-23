@@ -1,61 +1,61 @@
 {
-  "package": "com.devislee.gankio",
-  "name": "gankio",
-  "versionName": "1.0.0",
-  "versionCode": "1",
-  "minPlatformVersion": "101",
-  "icon": "/Common/logo.png",
-  "features": [
-    { "name": "system.webview" },
-    { "name": "system.prompt" },
-    { "name": "system.device" },
-    { "name": "system.fetch" },
-    { "name": "system.file" },
-    { "name": "system.geolocation" },
-    { "name": "system.media" },
-    { "name": "system.notification" },
-    { "name": "system.barcode" },
-    { "name": "system.sensor" },
-    { "name": "system.share" },
-    { "name": "system.shortcut" },
-    { "name": "system.storage" },
-    { "name": "system.network" },
-    { "name": "system.request" }
-  ],
-  "permissions": [
-    { "origin": "*" }
-  ],
-  "config": {
-    "logLevel": "debug"
-  },
-  "router": {
-    "entry": "Home",
-    "pages": {
-      "Home": {
-        "component": "index"
-      }, 
-      "About": {
-        "component": "index"
-      },
-      "Web": {
-        "component": "index"
-      }
+    "package": "com.devislee.gankio",
+    "name": "gankio",
+    "versionName": "1.0.0",
+    "versionCode": "1",
+    "minPlatformVersion": "101",
+    "icon": "/Common/icon.png",
+    "features": [
+        { "name": "system.webview" },
+        { "name": "system.prompt" },
+        { "name": "system.device" },
+        { "name": "system.fetch" },
+        { "name": "system.file" },
+        { "name": "system.geolocation" },
+        { "name": "system.media" },
+        { "name": "system.notification" },
+        { "name": "system.barcode" },
+        { "name": "system.sensor" },
+        { "name": "system.share" },
+        { "name": "system.shortcut" },
+        { "name": "system.storage" },
+        { "name": "system.network" },
+        { "name": "system.request" }
+    ],
+    "permissions": [
+        { "origin": "*" }
+    ],
+    "config": {
+        "logLevel": "debug"
+    },
+    "router": {
+        "entry": "Home",
+        "pages": {
+            "Home": {
+                "component": "index"
+            },
+            "About": {
+                "component": "index"
+            },
+            "Web": {
+                "component": "index"
+            }
+        }
+    },
+    "display": {
+        "titleBarBackgroundColor": "#000000",
+        "titleBarTextColor": "#ffffff",
+        "backgroundColor": "#efefef",
+        "menu": true,
+        "pages": {
+            "Home": {
+                "titleBarText": "Gank",
+                "menu": true
+            },
+            "About": {
+                "titleBarText": "关于",
+                "menu": false
+            }
+        }
     }
-  },
-  "display": {
-    "titleBarBackgroundColor": "#000000",
-    "titleBarTextColor": "#ffffff",
-    "backgroundColor": "#efefef",
-    "menu": true,
-    "pages": {
-      "Home": {
-        "titleBarText": "Gank",
-        "menu": true
-      },
-      "About": {
-        "titleBarText": "关于",
-        "menu": false
-      }
-    }
-  }
 }
